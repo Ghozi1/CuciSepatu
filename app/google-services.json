@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "107245641900",
+    "project_id": "tugasakhirpam-95f2f",
+    "storage_bucket": "tugasakhirpam-95f2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107245641900:android:6857869ea186fab3667f09",
+        "android_client_info": {
+          "package_name": "com.example.cucisepatu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiLtKrOMdUj4VcwCwoAHKCzAeUp_FTUig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
