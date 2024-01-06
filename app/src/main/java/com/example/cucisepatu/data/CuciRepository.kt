@@ -53,7 +53,10 @@ class CuciSepatuRepository(private val firestore: FirebaseFirestore) : CuciRepos
     }
 
     override suspend fun delete(sepatuId: String) {
-        TODO("Not yet implemented")
+        firestore.collection("Sepatu")
+            .document(sepatuId)
+            .delete()
+            .await()
     }
 
     override fun getSepatuById(sepatuId: String): Flow<Sepatu> {
