@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.cucisepatu.model.Sepatu
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -60,7 +61,14 @@ class CuciSepatuRepository(private val firestore: FirebaseFirestore) : CuciRepos
     }
 
     override fun getSepatuById(sepatuId: String): Flow<Sepatu> {
-        TODO("Not yet implemented")
+        return flow {
+            val snapshot = firestore.collection("Sepatu")
+                .document(sepatuId)
+                .get()
+                .await()
+            val sepatu = snapshot.toObject(Sepatu::class.java)
+            emit(sepatu!!)
+        }.flowOn(Dispatchers.IO)
     }
 
 }
