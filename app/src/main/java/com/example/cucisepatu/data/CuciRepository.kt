@@ -1,5 +1,7 @@
 package com.example.cucisepatu.data
 
+import android.content.ContentValues
+import android.util.Log
 import com.example.cucisepatu.model.Sepatu
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -28,7 +30,19 @@ class CuciSepatuRepository(private val firestore: FirebaseFirestore) : CuciRepos
     } .flowOn(Dispatchers.IO)
 
     override suspend fun save(sepatu: Sepatu): String {
-        TODO("Not yet implemented")
+        return try{
+            val documentReference = firestore.collection("Sepatu")
+                .add(sepatu)
+                .await()
+
+            firestore.collection("Sepatu")
+                .document(documentReference.id)
+                .set(sepatu.copy(id = documentReference.id))
+            "Berhasil + ${documentReference.id}"
+        } catch (e : Exception){
+            Log.w(ContentValues.TAG,"Error Adding Document",e)
+            "Gagal $e"
+        }
     }
 
     override suspend fun update(sepatu: Sepatu) {
