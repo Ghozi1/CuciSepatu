@@ -13,3 +13,4 @@ class CuciFireBase : CuciSepatuFireBase {
         CuciSepatuRepository(firestore)
     }
 }
+
