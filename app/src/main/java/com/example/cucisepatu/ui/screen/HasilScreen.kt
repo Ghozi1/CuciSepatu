@@ -125,11 +125,11 @@ fun PesanCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = sepatu.tipe_sepatu,
+                    text = sepatu.jenisSepatu.toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = sepatu.tipe_cuci,
+                    text = sepatu.tipeCuci,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))
