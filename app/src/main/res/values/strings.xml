@@ -6,4 +6,12 @@
     <string name="mars_photo">Mars photo</string>
     <string name="hint_password">Password</string>
     <string name="text_ok">OK</string>
+    <string name="nama">nama Kontak*</string>
+    <string name="alamat">Alamat Kontak*</string>
+    <string name="telpon">Telpon Kontak*</string>
+    <string name="nama1">Nama Kontak :</string>
+    <string name="alamat1">Alamat Kontak :</string>
+    <string name="telpon1">Telpon Kontak :</string>
+    <string name="required_field">* required fields</string>
+    <string name="btn_submit">Submit</string>
 </resources>

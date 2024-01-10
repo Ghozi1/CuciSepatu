@@ -88,18 +88,17 @@ fun PesanLayout(
         }
     }
 }
-
 @Composable
 fun PesanCard(
     sepatu: Sepatu,
     onDeleteClick: (Sepatu) -> Unit = {},
     modifier: Modifier = Modifier
-){
-    Card (
+) {
+    Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -121,7 +120,8 @@ fun PesanCard(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(

@@ -4,10 +4,8 @@ import android.content.ContentValues
 import android.util.Log
 import com.example.cucisepatu.model.Jenis_Sepatu
 import com.example.cucisepatu.model.Sepatu
-import com.example.cucisepatu.model.SepatuWithJenis
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,94 +13,77 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 
 interface CuciRepository {
-    fun getAll(): Flow<List<SepatuWithJenis>>
-    suspend fun save(sepatu: SepatuWithJenis): String
-    suspend fun update(sepatu: SepatuWithJenis)
-    suspend fun delete(sepatuId: Int)
-    fun getSepatuById(sepatuId: Int): Flow<SepatuWithJenis>
+    fun getAll(): Flow<List<Sepatu>>
+    suspend fun save(sepatu: Sepatu): String
+    suspend fun update(sepatu: Sepatu)
+    suspend fun delete(sepatuId: String)
+    fun getSepatuById(sepatuId: String): Flow<Sepatu>
+    suspend fun getJenisSepatuItems(): List<Jenis_Sepatu>
+    companion object
 }
 
-class CuciSepatuRepository(private val firestore: FirebaseFirestore) : CuciRepository {
-    override fun getAll(): Flow<List<SepatuWithJenis>> = flow {
+class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciRepository {
+    override fun getAll(): Flow<List<Sepatu>> = flow {
         val snapshot = firestore.collection("Sepatu")
             .orderBy("Nama", Query.Direction.ASCENDING)
             .get()
             .await()
-        val sepatuList = snapshot.toObjects(Sepatu::class.java)
-            .map { sepatu ->
-                val jenisSnapshot = firestore.collection("Jenis_Sepatu")
-                    .document(sepatu.jenisSepatu.toString())
-                    .get()
-                    .await()
-                val jenisSepatu = jenisSnapshot.toObject<Jenis_Sepatu>()
-                SepatuWithJenis(sepatu, jenisSepatu!!)
-            }
-        emit(sepatuList)
+        val sepatu = snapshot.toObjects(Sepatu::class.java)
+        emit(sepatu)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun save(sepatuWithJenis: SepatuWithJenis): String {
+    override suspend fun save(sepatu: Sepatu): String {
         return try {
-            val sepatu = sepatuWithJenis.sepatu
             val documentReference = firestore.collection("Sepatu")
                 .add(sepatu)
                 .await()
 
             firestore.collection("Sepatu")
                 .document(documentReference.id)
-                .set(sepatu.copy(id = documentReference.id.toInt())) // Convert to Int
-                .await()
-
-            val jenisSepatu = sepatuWithJenis.jenisSepatu
-            firestore.collection("Jenis_Sepatu")
-                .document(jenisSepatu.id.toString())
-                .set(jenisSepatu)
-                .await()
-
-            "Berhasil + ${documentReference.id}"
+                .set(sepatu.copy(id = documentReference.id.toInt()))
+            "Berhasil " + documentReference.id
         } catch (e: Exception) {
             Log.w(ContentValues.TAG, "Error Adding Document", e)
             "Gagal $e"
         }
     }
 
-    override suspend fun update(sepatuWithJenis: SepatuWithJenis) {
-        val sepatu = sepatuWithJenis.sepatu
-        val jenisSepatu = sepatuWithJenis.jenisSepatu
-
+    override suspend fun update(sepatu: Sepatu) {
         firestore.collection("Sepatu")
             .document(sepatu.id.toString())
             .set(sepatu)
             .await()
-
-        firestore.collection("Jenis_Sepatu")
-            .document(jenisSepatu.id.toString())
-            .set(jenisSepatu)
-            .await()
     }
 
-    override suspend fun delete(sepatuId: Int) {
+    override suspend fun delete(sepatuId: String) {
         firestore.collection("Sepatu")
-            .document(sepatuId.toString())
+            .document(sepatuId)
             .delete()
             .await()
     }
 
-    override fun getSepatuById(sepatuId: Int): Flow<SepatuWithJenis> = flow {
-        val sepatuSnapshot = firestore.collection("Sepatu")
-            .document(sepatuId.toString())
-            .get()
-            .await()
+    override fun getSepatuById(sepatuId: String): Flow<Sepatu> {
+        return flow {
+            val snapshot = firestore.collection("Sepatu")
+                .document(sepatuId)
+                .get()
+                .await()
+            val sepatu = snapshot.toObject(Sepatu::class.java)
+            emit(sepatu!!)
+        }.flowOn(Dispatchers.IO)
+    }
 
-        val jenisSnapshot = firestore.collection("Jenis_Sepatu")
-            .document(sepatuId.toString())
-            .get()
-            .await()
+    override suspend fun getJenisSepatuItems(): List<Jenis_Sepatu> {
+        return try {
+            val snapshot = firestore.collection("JenisSepatu")
+                .orderBy("nama", Query.Direction.ASCENDING)
+                .get()
+                .await()
 
-        val sepatu = sepatuSnapshot.toObject<Sepatu>()
-        val jenisSepatu = jenisSnapshot.toObject<Jenis_Sepatu>()
-
-        if (sepatu != null && jenisSepatu != null) {
-            emit(SepatuWithJenis(sepatu, jenisSepatu))
+            snapshot.toObjects(Jenis_Sepatu::class.java)
+        } catch (e: Exception) {
+            Log.w(ContentValues.TAG, "Error fetching JenisSepatu", e)
+            emptyList()  // Return an empty list or handle the error as needed
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }

@@ -1,19 +1,21 @@
 package com.example.cucisepatu.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.cucisepatu.ui.SepatuAplication
+import com.example.cucisepatu.ui.screen.HomeViewModel
 
-class HomeScreenViewModel : ViewModel() {
 
-    // Properti ViewModel
-    private var password: String = ""
+fun CreationExtras.aplikasiCuci(): SepatuAplication =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as  SepatuAplication)
 
-    // Metode untuk mengatur password
-    fun setPassword(newPassword: String) {
-        password = newPassword
-    }
 
-    // Metode untuk memeriksa password
-    fun isPasswordCorrect(enteredPassword: String): Boolean {
-        return password == enteredPassword
+object PenyediaViewModel {
+    val Factory = viewModelFactory {
+        initializer {
+            HomeViewModel(aplikasiCuci().container.cuciRepository)
+        }
     }
 }

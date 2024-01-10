@@ -1,118 +1,197 @@
 package com.example.cucisepatu.ui.screen
 
-import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
-import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cucisepatu.R
-import com.example.cucisepatu.ui.viewmodel.HomeScreenViewModel
+import com.example.cucisepatu.ui.DetailCuci
+import com.example.cucisepatu.ui.UIStateCuci
+import com.example.cucisepatu.ui.viewmodel.PenyediaViewModel
+import kotlinx.coroutines.launch
 
-class HomeScreen : ComponentActivity() {
 
-    private val viewModel: HomeScreenViewModel by viewModels()
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    val jenisSepatuItems by viewModel.jenisSepatuItems.collectAsState()
 
-        val verticalLayout = LinearLayout(this)
-        verticalLayout.orientation = LinearLayout.VERTICAL
-        verticalLayout.setPadding(
-            resources.getDimensionPixelSize(R.dimen.margin_16),
-            resources.getDimensionPixelSize(R.dimen.margin_16),
-            resources.getDimensionPixelSize(R.dimen.margin_16),
-            resources.getDimensionPixelSize(R.dimen.margin_16)
+    Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { innerPadding ->
+        EntryCuciBody(
+            uiStateCuci = viewModel.uiStateKontak,
+            onSiswaValueChange = viewModel::updateUiState,
+            onSaveClick = {
+                coroutineScope.launch {
+                    viewModel.saveKontak()
+                    navigateBack()
+                }
+            },
+            jenisSepatuItems = jenisSepatuItems,
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
         )
-
-        // Bagian atas
-        val textView = androidx.appcompat.widget.AppCompatTextView(this)
-        textView.text = "Selamat Datang"
-        textView.textSize = 24f
-        val topMargin = resources.getDimensionPixelSize(R.dimen.margin_top)
-        val textLayoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        textLayoutParams.topMargin = topMargin
-        textView.layoutParams = textLayoutParams
-        verticalLayout.addView(textView)
-
-        // Bagian tengah
-        val buttonPemesanan = Button(this)
-        buttonPemesanan.text = "Pemesanan"
-        val buttonLayoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        buttonLayoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.margin_top)
-        buttonPemesanan.layoutParams = buttonLayoutParams
-        buttonPemesanan.setOnClickListener {
-            showPasswordDialog()
-        }
-        verticalLayout.addView(buttonPemesanan)
-
-        // Bagian bawah
-        val relativeLayout = RelativeLayout(this)
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        layoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.margin_top)
-        relativeLayout.layoutParams = layoutParams
-
-        val cardView = CardView(this)
-        cardView.cardElevation = resources.getDimension(R.dimen.card_elevation)
-        cardView.radius = resources.getDimension(R.dimen.card_radius)
-        val cardLayoutParams = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.WRAP_CONTENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-        cardLayoutParams.marginEnd = resources.getDimensionPixelSize(R.dimen.margin_end)
-        cardLayoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.margin_top)
-        cardView.layoutParams = cardLayoutParams
-
-        val plusButton = Button(this)
-        plusButton.text = "+"
-        plusButton.setOnClickListener {
-            showPasswordDialog()
-        }
-        cardView.addView(plusButton)
-
-        relativeLayout.addView(cardView)
-        verticalLayout.addView(relativeLayout)
-
-        setContentView(verticalLayout)
     }
+}
+@Composable
+fun EntryCuciBody(
+    uiStateCuci: UIStateCuci,
+    onSiswaValueChange: (DetailCuci) -> Unit,
+    onSaveClick: () -> Unit,
+    jenisSepatuItems: List<String>,
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues()
+) {
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState())
+    ) {
+        FormInputCuci(
+            detailCuci = uiStateCuci.detailCuci,
+            jenisSepatuItems = jenisSepatuItems,
+            onValueChange = onSiswaValueChange,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxWidth()
+        )
 
-    private fun showPasswordDialog() {
-        val passwordDialogView = layoutInflater.inflate(R.layout.dialog_password, null)
+        // Other UI components...
 
-        val passwordEditText = passwordDialogView.findViewById<EditText>(R.id.passwordEditText)
-        val okButton = passwordDialogView.findViewById<Button>(R.id.okButton)
-
-        val passwordDialog = AlertDialog.Builder(this)
-            .setView(passwordDialogView)
-            .create()
-
-        passwordDialog.show()
-
-        okButton?.setOnClickListener {
-            val enteredPassword = passwordEditText?.text.toString()
-            if (viewModel.isPasswordCorrect(enteredPassword)) {
-                // Password benar, redirect ke halaman jenis_sepatu
-                Toast.makeText(this, "Password benar", Toast.LENGTH_SHORT).show()
-                // Uncomment the following line when you have the JenisSepatuActivity
-                // startActivity<JenisSepatuActivity>()
-            } else {
-                // Password salah, tampilkan pesan error
-                Toast.makeText(this, "Password salah", Toast.LENGTH_SHORT).show()
-            }
-            passwordDialog.dismiss()
+        Button(
+            onClick = onSaveClick,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium))
+        ) {
+            Text(text = stringResource(id = R.string.btn_submit))
         }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FormInputCuci(
+    detailCuci: DetailCuci,
+    modifier: Modifier,
+    onValueChange : (DetailCuci) -> Unit = {},
+    enabled: Boolean = true,
+){
+    Column (
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+    ){
+        OutlinedTextField(
+            value = detailCuci.nama,
+            onValueChange ={onValueChange(detailCuci.copy(nama = it))},
+            label = { Text(stringResource(id = R.string.nama)) },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled
+        )
+        OutlinedTextField(
+            value = detailCuci.alamat,
+            onValueChange ={onValueChange(detailCuci.copy(alamat = it))},
+            label = { Text(stringResource(R.string.alamat)) },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled
+        )
+        OutlinedTextField(
+            value = detailCuci.nohp,
+            onValueChange ={onValueChange(detailCuci.copy(nohp = it))},
+            label = { Text(stringResource(R.string.telpon)) },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled
+        )
+        BasicTextField(
+            value = detailCuci.jenisSepatu,
+            onValueChange = { onValueChange(detailCuci.copy(jenisSepatu = it)) },
+            textStyle = MaterialTheme.typography.body1,
+            label = { Text(stringResource(R.string.jenis_sepatu)) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled
+        )
+
+        // Dropdown Menu for jenisSepatu
+        DropdownMenu(
+            expanded = false,
+            onDismissRequest = { /* handle dismiss if needed */ },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            jenisSepatuItems.forEach { jenisSepatuItem ->
+                DropdownMenuItem(
+                    onClick = {
+                        onValueChange(detailCuci.copy(jenisSepatu = jenisSepatuItem))
+                    }
+                ) {
+                    Text(text = jenisSepatuItem)
+                }
+            }
+        }
+
+        // Other text fields...
+
+        if (enabled) {
+            Text(
+                text = stringResource(id = R.string.required_field),
+                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+        Divider(
+            thickness = dimensionResource(id = R.dimen.padding_small),
+            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+        )
+        OutlinedTextField(
+            value = detailCuci.tipeCuci,
+            onValueChange ={onValueChange(detailCuci.copy(tipeCuci = it))},
+            label = { Text(stringResource(R.string.telpon)) },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled
+        )
+        if (enabled) {
+            Text(
+                text = stringResource(id = R.string.required_field),
+                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+        Divider(
+            thickness = dimensionResource(id = R.dimen.padding_small),
+            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+
+        )
     }
 }

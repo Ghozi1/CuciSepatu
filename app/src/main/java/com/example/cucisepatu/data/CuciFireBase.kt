@@ -10,7 +10,7 @@ class CuciFireBase : CuciSepatuFireBase {
     private val firestore :FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override val cuciRepository: CuciRepository by lazy {
-        CuciSepatuRepository(firestore)
+        CuciRepositoryImpl(firestore)
     }
 }
 

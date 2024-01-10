@@ -12,11 +12,12 @@ data class Sepatu(
     val nama: String,
     @ColumnInfo(name = "nohp")
     val nohp: String,
+    val alamat : String,
     @ColumnInfo(name = "jenis_sepatu")
     val jenisSepatu: Int,
     @ColumnInfo(name = "tipe_cuci")
     val tipeCuci: String
 ) {
     // Konstruktor tambahan
-    constructor(nama: String, nohp: String, jenisSepatu: Int, tipeCuci: String) : this(0, nama, nohp, jenisSepatu, tipeCuci)
+    constructor(nama: String, nohp: String, alamat: String, jenisSepatu: Int, tipeCuci: String) : this(0, nama, nohp, alamat, jenisSepatu, tipeCuci)
 }
