@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tblSepatu", foreignKeys = [ForeignKey(entity = Jenis_Sepatu::class, parentColumns = ["id"], childColumns = ["jenis_sepatu"])])
 data class Sepatu(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: String,
     val nama: String,
     @ColumnInfo(name = "nohp")
     val nohp: String,
     val alamat : String,
     @ColumnInfo(name = "jenis_sepatu")
-    val jenisSepatu: Int,
+    val jenisSepatu: String,
     @ColumnInfo(name = "tipe_cuci")
     val tipeCuci: String
 ) {
     // Konstruktor tambahan
-    constructor(nama: String, nohp: String, alamat: String, jenisSepatu: Int, tipeCuci: String) : this(0, nama, nohp, alamat, jenisSepatu, tipeCuci)
+    constructor(): this("","","","","","")
 }

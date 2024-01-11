@@ -3,22 +3,21 @@ package com.example.cucisepatu.ui
 import com.example.cucisepatu.model.Sepatu
 
 
-data class UIStateCuci(
-    val detailCuci: DetailCuci = DetailCuci(),
+data class PemesananUIState(
+    val pemesananEvent: PemesananEvent = PemesananEvent()
+)
 
-    )
-
-data class DetailCuci(
-    val id: Int = 0,
+data class PemesananEvent(
+    val id: String ="",
     val nama: String = "",
     val nohp: String = "",
     val alamat: String = "",
-    val jenisSepatu : Int = 0,
+    val jenisSepatu : String = "",
     val tipeCuci : String = ""
 )
 
 /*Fungsi untuk mengkonversi data input ke data dalam tabel sesuai jenis datanya*/
-fun DetailCuci.toSepatu(): Sepatu = Sepatu(
+fun PemesananEvent.toSepatu(): Sepatu = Sepatu(
     id = id,
     nama = nama,
     nohp = nohp,
@@ -27,16 +26,25 @@ fun DetailCuci.toSepatu(): Sepatu = Sepatu(
     tipeCuci = tipeCuci
 )
 
-fun Sepatu.toUiStateSepatu(isEntryValid: Boolean =false): UIStateCuci= UIStateCuci(
-    detailCuci = this.toDetailCuci(),
+data class DetailUIState(
+    val pemesananEvent: PemesananEvent = PemesananEvent()
 )
 
-fun Sepatu.toDetailCuci(): DetailCuci = DetailCuci(
+fun Sepatu.toUiStateSepatu(): PemesananUIState= PemesananUIState(
+    pemesananEvent = this.toDetailSepatu(),
+)
+
+fun Sepatu.toDetailSepatu(): PemesananEvent = PemesananEvent(
     id = id,
     nama = nama ,
     alamat = alamat,
     nohp = nohp,
     jenisSepatu = jenisSepatu,
     tipeCuci = tipeCuci
+)
+
+data class HomeUIState(
+    val listSepatu: List<Sepatu> = listOf(),
+    val dataLength: Int = 0
 )
 

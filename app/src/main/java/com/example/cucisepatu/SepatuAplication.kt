@@ -1,4 +1,4 @@
-package com.example.cucisepatu.ui
+package com.example.cucisepatu
 
 import android.app.Application
 import com.example.cucisepatu.data.CuciFireBase

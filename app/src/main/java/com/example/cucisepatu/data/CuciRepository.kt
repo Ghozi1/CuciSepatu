@@ -40,7 +40,7 @@ class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciReposit
 
             firestore.collection("Sepatu")
                 .document(documentReference.id)
-                .set(sepatu.copy(id = documentReference.id.toInt()))
+                .set(sepatu.copy(id = documentReference.id))
             "Berhasil " + documentReference.id
         } catch (e: Exception) {
             Log.w(ContentValues.TAG, "Error Adding Document", e)
@@ -50,7 +50,7 @@ class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciReposit
 
     override suspend fun update(sepatu: Sepatu) {
         firestore.collection("Sepatu")
-            .document(sepatu.id.toString())
+            .document(sepatu.id)
             .set(sepatu)
             .await()
     }
