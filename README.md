@@ -7,15 +7,16 @@ Untuk melakukan penyimpanan data pesanan dari pelanggan, aplikasi ini menerapkan
 
 ## Use Case ##
 
-<img width="574" alt="image" src="https://github.com/Ghozi1/CuciSepatu/assets/114936593/aa845b86-6aaa-48c7-a373-dfdd71f72084">
+<img width="589" alt="image" src="https://github.com/Ghozi1/CuciSepatu/assets/114936593/72d50ac0-ecc5-43c2-b02a-e7047604cae6">
+
 
 ## Pembagian Tugas ##
 Thariq Azhar akan mengerjakan bagian UI. 
 Bagian tersebut terdiri dari halaman pemesanan yang dimana 
 pengguna dapat melakukan pesanan, halaman view pesanan agar pengguna dapat melihat pesanan
 , halaman home yang berisi button untuk menuju ke halaman pemesanan dan halaman view 
-pesanan, dan navigasi halamannya.
+pesanan. Lalu bagian form jenis sepatu dan navigasi dari halaman aplikasi.
 
-Ghozi akan mengerjakan bagian database.
-Bagian tersebut terdiri dari data class, fitur create untuk menambah pesanan, read untuk melihat pesanan
+Ghozi akan mengerjakan bagian database dan login.
+Bagian database terdiri dari data class, fitur create untuk menambah pesanan, read untuk melihat pesanan
 , update untuk merubah pesanan, dan delete untuk menghapus pesanan.
