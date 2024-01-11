@@ -47,3 +47,4 @@ data class HomeUIState(
     val listSepatu: List<Jenis_Sepatu> = listOf(),
     val dataLength: Int = 0
 )
+

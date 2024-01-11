@@ -39,8 +39,7 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 onDetailClick = { itemId ->
                     navController.navigate("${DetailDestination.route}/$itemId")
                     println("itemId: $itemId")
-                }
-            )
+                })
         }
         composable(DestinasiEntry.route) {
             PemesananScreen(navigateBack = {
@@ -55,13 +54,13 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 type = NavType.StringType
             })
         ) { backStackEntry ->
-            val sepatuId = backStackEntry.arguments?.getString(DetailDestination.sepatuId)
-            sepatuId?.let {
+            val kontakId = backStackEntry.arguments?.getString(DetailDestination.sepatuId)
+            kontakId?.let {
                 DetailScreen(
                     navigateBack = { navController.popBackStack() },
                     navigateToEditItem = {
-                        navController.navigate("${EditDestination.route}/$sepatuId")
-                        println("kontakId: $sepatuId")
+                        navController.navigate("${EditDestination.route}/$kontakId")
+                        println("kontakId: $kontakId")
                     }
                 )
             }
@@ -73,8 +72,8 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 type = NavType.StringType
             })
         ) { backStackEntry ->
-            val sepatuId = backStackEntry.arguments?.getString(EditDestination.sepatuId)
-            sepatuId?.let {
+            val kontakId = backStackEntry.arguments?.getString(EditDestination.sepatuId)
+            kontakId?.let {
                 EditScreen(
                     navigateBack = { navController.popBackStack() },
                     onNavigateUp = { navController.navigateUp() }

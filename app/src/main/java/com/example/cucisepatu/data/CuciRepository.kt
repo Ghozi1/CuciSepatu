@@ -18,12 +18,13 @@ interface CuciRepository {
     suspend fun delete(sepatuId: String)
     fun getSepatuById(sepatuId: String): Flow<Jenis_Sepatu>
     suspend fun getJenisSepatuItems(): List<Jenis_Sepatu>
+    companion object
 }
 
 class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciRepository {
     override fun getAll(): Flow<List<Jenis_Sepatu>> = flow {
         val snapshot = firestore.collection("Sepatu")
-            .orderBy("nama", Query.Direction.ASCENDING)
+            .orderBy("Nama", Query.Direction.ASCENDING)
             .get()
             .await()
         val sepatu = snapshot.toObjects(Jenis_Sepatu::class.java)
