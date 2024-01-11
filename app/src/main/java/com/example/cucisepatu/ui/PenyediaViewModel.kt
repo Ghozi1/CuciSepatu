@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.cucisepatu.SepatuAplication
+import com.example.cucisepatu.ui.JenisSepatu.JenisViewModel
 import com.example.cucisepatu.ui.detail.DetailViewModel
 import com.example.cucisepatu.ui.edit.EditViewModel
 import com.example.cucisepatu.ui.home.HomeViewModel
@@ -23,6 +24,10 @@ object PenyediaViewModel {
 
         initializer {
             HomeViewModel(aplikasiSepatu().container.cuciRepository)
+        }
+
+        initializer {
+            JenisViewModel(aplikasiSepatu().container.cuciRepository)
         }
 
         initializer {
