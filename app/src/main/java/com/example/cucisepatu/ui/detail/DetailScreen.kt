@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 
 object DetailDestination : DestinasiNavigasi {
     override val route = "item_details"
-    override val titleRes = "Detail Kontak"
+    override val titleRes = "Detail Sepatu"
     const val sepatuId = "itemId"
     val routeWithArgs = "$route/{$sepatuId}"
 }
@@ -86,7 +86,7 @@ fun DetailScreen(
                 // change occurs, the Activity will be recreated and the rememberCoroutineScope will
                 // be cancelled - since the scope is bound to composition.
                 coroutineScope.launch {
-                    viewModel.deleteKontak()
+                    viewModel.deletePesanan()
                     navigateBack()
                 }
             },

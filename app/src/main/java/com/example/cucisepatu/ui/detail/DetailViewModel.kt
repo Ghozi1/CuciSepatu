@@ -33,7 +33,7 @@ class DetailViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = DetailUIState()
             )
-    suspend fun deleteKontak() {
+    suspend fun deletePesanan() {
         repository.delete(sepatuId)
 
     }
