@@ -1,4 +1,4 @@
-package com.example.cucisepatu.ui.pemesanan
+package com.example.cucisepatu.ui.jenissepatu
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,16 +9,17 @@ import com.example.cucisepatu.ui.PemesananEvent
 import com.example.cucisepatu.ui.PemesananJenis
 import com.example.cucisepatu.ui.toSepatu
 
-class PemesananViewModel (private val cuciRepository: CuciRepository) : ViewModel() {
 
-    var pemesananUIState by mutableStateOf(PemesananJenis())
+class JenisSepatuViewModel (private val cuciRepository: CuciRepository) : ViewModel() {
+
+    var jenisUIState by mutableStateOf(PemesananJenis())
         private set
 
     fun updatePesananUIState(pemesananEvent: PemesananEvent) {
-        pemesananUIState = PemesananJenis(pemesananEvent = pemesananEvent)
+        jenisUIState = PemesananJenis(pemesananEvent = pemesananEvent)
     }
 
     suspend fun addPesanan() {
-        cuciRepository.save(pemesananUIState.pemesananEvent.toSepatu())
+        cuciRepository.save(jenisUIState.pemesananEvent.toSepatu())
     }
 }

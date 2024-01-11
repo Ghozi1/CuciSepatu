@@ -14,6 +14,7 @@ import com.example.cucisepatu.ui.edit.EditDestination
 import com.example.cucisepatu.ui.edit.EditScreen
 import com.example.cucisepatu.ui.home.DestinasiHome
 import com.example.cucisepatu.ui.home.HomeScreen
+import com.example.cucisepatu.ui.jenissepatu.DestinasiJenis
 import com.example.cucisepatu.ui.pemesanan.DestinasiEntry
 import com.example.cucisepatu.ui.pemesanan.PemesananScreen
 
@@ -28,9 +29,13 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         composable(
             DestinasiHome.route
         ) {
-            HomeScreen(navigateToItemEntry = {
-                navController.navigate(DestinasiEntry.route)
-            },
+            HomeScreen(
+                navigateToItemEntry = {
+                    navController.navigate(DestinasiEntry.route)
+                },
+                navigateToJenisSepatu = {
+                    navController.navigate(DestinasiJenis.route)
+                },
                 onDetailClick = { itemId ->
                     navController.navigate("${DetailDestination.route}/$itemId")
                     println("itemId: $itemId")

@@ -8,7 +8,7 @@ import androidx.room.Relation
 @Entity(tableName = "tblJenisSepatu")
 data class Jenis_Sepatu(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: String,
     val nama: String
 )
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cucisepatu.data.CuciRepository
 import com.example.cucisepatu.ui.PemesananEvent
-import com.example.cucisepatu.ui.PemesananUIState
+import com.example.cucisepatu.ui.PemesananJenis
 import com.example.cucisepatu.ui.toSepatu
 import com.example.cucisepatu.ui.toUiStateSepatu
 import kotlinx.coroutines.flow.filterNotNull
@@ -20,7 +20,7 @@ class EditViewModel(
     private val repository: CuciRepository
 ) : ViewModel() {
 
-    var sepatuUiState by mutableStateOf(PemesananUIState())
+    var sepatuUiState by mutableStateOf(PemesananJenis())
         private set
 
     private val sepatuId: String = checkNotNull(savedStateHandle[EditDestination.sepatuId])

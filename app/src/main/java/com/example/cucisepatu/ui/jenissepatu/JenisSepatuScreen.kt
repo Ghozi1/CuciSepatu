@@ -1,4 +1,4 @@
-package com.example.cucisepatu.ui.pemesanan
+package com.example.cucisepatu.ui.jenissepatu
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,24 +18,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cucisepatu.navigation.DestinasiNavigasi
 import com.example.cucisepatu.ui.PemesananEvent
-import com.example.cucisepatu.ui.PemesananJenis
 import com.example.cucisepatu.ui.PenyediaViewModel
 import com.example.cucisepatu.ui.PesanTopAppBar
+import com.example.cucisepatu.ui.pemesanan.PemesananViewModel
 import kotlinx.coroutines.launch
 
-object DestinasiEntry : DestinasiNavigasi {
-    override val route = "item_entry"
-    override val titleRes = "Entry Pesanan"
+
+object DestinasiJenis : DestinasiNavigasi {
+    override val route = "item_jenis"
+    override val titleRes = "Entry Jenis"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PemesananScreen(
+fun JenisSepatuScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     pemesananViewModel: PemesananViewModel = viewModel(factory = PenyediaViewModel.Factory)
@@ -47,7 +47,7 @@ fun PemesananScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             PesanTopAppBar(
-                title = DestinasiEntry.titleRes,
+                title = DestinasiJenis.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack
@@ -83,7 +83,7 @@ fun EntryBody(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.padding(12.dp)
     ) {
-        FormInput(
+        FormInputJenis(
             pemesananEvent = pemesananUIState.pemesananEvent,
             onValueChange = onPesanValueChange,
             modifier = Modifier.fillMaxWidth()
@@ -100,7 +100,7 @@ fun EntryBody(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormInput(
+fun FormInputJenis(
     pemesananEvent: PemesananEvent,
     modifier: Modifier = Modifier,
     onValueChange: (PemesananEvent) -> Unit = {},
@@ -113,42 +113,7 @@ fun FormInput(
         OutlinedTextField(
             value = pemesananEvent.nama,
             onValueChange = { onValueChange(pemesananEvent.copy(nama = it)) },
-            label = { Text("Nama") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = pemesananEvent.alamat,
-            onValueChange = { onValueChange(pemesananEvent.copy(alamat = it)) },
-            label = { Text("Alamat") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = pemesananEvent.nohp,
-            onValueChange = { onValueChange(pemesananEvent.copy(nohp = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(text = "Telepon") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = pemesananEvent.jenisSepatu,
-            onValueChange = { onValueChange(pemesananEvent.copy(jenisSepatu = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(text = "Jenis Sepatu") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = pemesananEvent.tipeCuci,
-            onValueChange = { onValueChange(pemesananEvent.copy(tipeCuci = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(text = "Tipe Cuci") },
+            label = { Text("nama") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
