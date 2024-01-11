@@ -14,7 +14,6 @@ import com.example.cucisepatu.ui.pemesanan.PemesananViewModel
 
 fun CreationExtras.aplikasiSepatu(): SepatuAplication =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SepatuAplication)
-
 object PenyediaViewModel {
     val Factory = viewModelFactory {
 
@@ -24,10 +23,6 @@ object PenyediaViewModel {
 
         initializer {
             HomeViewModel(aplikasiSepatu().container.cuciRepository)
-        }
-
-        initializer {
-            JenisViewModel(aplikasiSepatu().container.cuciRepository)
         }
 
         initializer {
