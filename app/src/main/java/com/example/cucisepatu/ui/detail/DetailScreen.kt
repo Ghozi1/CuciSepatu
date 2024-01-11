@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cucisepatu.model.Sepatu
+import com.example.cucisepatu.model.Jenis_Sepatu
 import com.example.cucisepatu.navigation.DestinasiNavigasi
 import com.example.cucisepatu.ui.DetailUIState
 import com.example.cucisepatu.ui.PenyediaViewModel
@@ -136,7 +136,7 @@ private fun ItemDetailsBody(
 
 @Composable
 fun ItemDetails(
-    sepatu: Sepatu, modifier: Modifier = Modifier
+    sepatu: Jenis_Sepatu, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(

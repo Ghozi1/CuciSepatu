@@ -3,7 +3,6 @@ package com.example.cucisepatu.data
 import android.content.ContentValues
 import android.util.Log
 import com.example.cucisepatu.model.Jenis_Sepatu
-import com.example.cucisepatu.model.Sepatu
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
@@ -13,25 +12,25 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 
 interface CuciRepository {
-    fun getAll(): Flow<List<Sepatu>>
-    suspend fun save(sepatu: Sepatu): String
-    suspend fun update(sepatu: Sepatu)
+    fun getAll(): Flow<List<Jenis_Sepatu>>
+    suspend fun save(sepatu: Jenis_Sepatu): String
+    suspend fun update(sepatu: Jenis_Sepatu)
     suspend fun delete(sepatuId: String)
-    fun getSepatuById(sepatuId: String): Flow<Sepatu>
+    fun getSepatuById(sepatuId: String): Flow<Jenis_Sepatu>
     suspend fun getJenisSepatuItems(): List<Jenis_Sepatu>
 }
 
 class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciRepository {
-    override fun getAll(): Flow<List<Sepatu>> = flow {
+    override fun getAll(): Flow<List<Jenis_Sepatu>> = flow {
         val snapshot = firestore.collection("Sepatu")
             .orderBy("nama", Query.Direction.ASCENDING)
             .get()
             .await()
-        val sepatu = snapshot.toObjects(Sepatu::class.java)
+        val sepatu = snapshot.toObjects(Jenis_Sepatu::class.java)
         emit(sepatu)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun save(sepatu: Sepatu): String {
+    override suspend fun save(sepatu: Jenis_Sepatu): String {
         return try {
             val documentReference = firestore.collection("Sepatu")
                 .add(sepatu)
@@ -47,7 +46,7 @@ class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciReposit
         }
     }
 
-    override suspend fun update(sepatu: Sepatu) {
+    override suspend fun update(sepatu: Jenis_Sepatu) {
         firestore.collection("Sepatu")
             .document(sepatu.id)
             .set(sepatu)
@@ -61,13 +60,13 @@ class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciReposit
             .await()
     }
 
-    override fun getSepatuById(sepatuId: String): Flow<Sepatu> {
+    override fun getSepatuById(sepatuId: String): Flow<Jenis_Sepatu> {
         return flow {
             val snapshot = firestore.collection("Sepatu")
                 .document(sepatuId)
                 .get()
                 .await()
-            val sepatu = snapshot.toObject(Sepatu::class.java)
+            val sepatu = snapshot.toObject(Jenis_Sepatu::class.java)
             emit(sepatu!!)
         }.flowOn(Dispatchers.IO)
     }

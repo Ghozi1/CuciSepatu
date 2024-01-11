@@ -11,13 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,7 +30,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cucisepatu.model.Sepatu
+import com.example.cucisepatu.model.Jenis_Sepatu
 import com.example.cucisepatu.navigation.DestinasiNavigasi
 import com.example.cucisepatu.ui.PenyediaViewModel
 import com.example.cucisepatu.ui.PesanTopAppBar
@@ -97,7 +95,7 @@ fun HomeScreen(
 
 @Composable
 fun BodyHome(
-    itemSepatu: List<Sepatu>,
+    itemSepatu: List<Jenis_Sepatu>,
     modifier: Modifier = Modifier,
     onPesanClick: (String) -> Unit = {}
 ) {
@@ -124,9 +122,9 @@ fun BodyHome(
 
 @Composable
 fun ListPesanan(
-    itemSepatu: List<Sepatu>,
+    itemSepatu: List<Jenis_Sepatu>,
     modifier: Modifier = Modifier,
-    onItemClick: (Sepatu) -> Unit
+    onItemClick: (Jenis_Sepatu) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -145,7 +143,7 @@ fun ListPesanan(
 
 @Composable
 fun DataPesanan(
-    sepatu: Sepatu,
+    sepatu: Jenis_Sepatu,
     modifier: Modifier = Modifier
 ) {
     Card(

@@ -3,7 +3,7 @@ package com.example.cucisepatu.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cucisepatu.data.CuciRepository
-import com.example.cucisepatu.model.Sepatu
+import com.example.cucisepatu.model.Jenis_Sepatu
 import com.example.cucisepatu.ui.HomeUIState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 sealed class PesananUIState {
-    data class Success(val sepatu: Flow<List<Sepatu>>) : PesananUIState()
+    data class Success(val sepatu: Flow<List<Jenis_Sepatu>>) : PesananUIState()
     object Error : PesananUIState()
     object Loading : PesananUIState()
 }

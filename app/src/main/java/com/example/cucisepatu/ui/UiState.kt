@@ -1,6 +1,6 @@
 package com.example.cucisepatu.ui
 
-import com.example.cucisepatu.model.Sepatu
+import com.example.cucisepatu.model.Jenis_Sepatu
 
 
 data class PemesananUIState(
@@ -17,7 +17,7 @@ data class PemesananEvent(
 )
 
 /*Fungsi untuk mengkonversi data input ke data dalam tabel sesuai jenis datanya*/
-fun PemesananEvent.toSepatu(): Sepatu = Sepatu(
+fun PemesananEvent.toSepatu(): Jenis_Sepatu = Jenis_Sepatu(
     id = id,
     nama = nama,
     nohp = nohp,
@@ -30,11 +30,11 @@ data class DetailUIState(
     val pemesananEvent: PemesananEvent = PemesananEvent()
 )
 
-fun Sepatu.toUiStateSepatu(): PemesananUIState= PemesananUIState(
+fun Jenis_Sepatu.toUiStateSepatu(): PemesananUIState= PemesananUIState(
     pemesananEvent = this.toDetailSepatu(),
 )
 
-fun Sepatu.toDetailSepatu(): PemesananEvent = PemesananEvent(
+fun Jenis_Sepatu.toDetailSepatu(): PemesananEvent = PemesananEvent(
     id = id,
     nama = nama ,
     alamat = alamat,
@@ -44,6 +44,6 @@ fun Sepatu.toDetailSepatu(): PemesananEvent = PemesananEvent(
 )
 
 data class HomeUIState(
-    val listSepatu: List<Sepatu> = listOf(),
+    val listSepatu: List<Jenis_Sepatu> = listOf(),
     val dataLength: Int = 0
 )

@@ -11,11 +11,11 @@ import com.example.cucisepatu.ui.toSepatu
 
 class PemesananViewModel (private val cuciRepository: CuciRepository) : ViewModel() {
 
-    var pemesananUIState by mutableStateOf(PemesananJenis())
+    var pemesananUIState by mutableStateOf(PemesananEvent())
         private set
 
     fun updatePesananUIState(pemesananEvent: PemesananEvent) {
-        pemesananUIState = PemesananJenis(pemesananEvent = pemesananEvent)
+        pemesananUIState = PemesananEvent(pemesananEvent = pemesananEvent)
     }
 
     suspend fun addPesanan() {
