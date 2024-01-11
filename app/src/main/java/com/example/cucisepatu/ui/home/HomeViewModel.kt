@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 sealed class PesananUIState {
-    data class Success(val kontak: Flow<List<Sepatu>>) : PesananUIState()
+    data class Success(val sepatu: Flow<List<Sepatu>>) : PesananUIState()
     object Error : PesananUIState()
     object Loading : PesananUIState()
 }
