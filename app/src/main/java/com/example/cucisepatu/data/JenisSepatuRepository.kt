@@ -34,7 +34,7 @@ class JenisRepositoryImpl(private val firestore: FirebaseFirestore) : JenisSepat
                 .add(jenisSepatu)
                 .await()
 
-            firestore.collection("Sepatu")
+            firestore.collection("Jenis Sepatu")
                 .document(documentReference.id)
                 .set(jenisSepatu.copy(id = documentReference.id))
             "Berhasil " + documentReference.id

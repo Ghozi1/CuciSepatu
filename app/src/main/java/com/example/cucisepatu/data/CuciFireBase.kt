@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 interface CuciSepatuFireBase {
     val cuciRepository : CuciRepository
+    val jenisSepatuRepository : JenisSepatuRepository
 }
 
 class CuciFireBase : CuciSepatuFireBase {
@@ -11,6 +12,10 @@ class CuciFireBase : CuciSepatuFireBase {
 
     override val cuciRepository: CuciRepository by lazy {
         CuciRepositoryImpl(firestore)
+    }
+
+    override val jenisSepatuRepository: JenisSepatuRepository by lazy {
+        JenisRepositoryImpl(firestore)
     }
 }
 

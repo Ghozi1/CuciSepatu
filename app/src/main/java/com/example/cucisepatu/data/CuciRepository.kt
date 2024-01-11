@@ -2,7 +2,6 @@ package com.example.cucisepatu.data
 
 import android.content.ContentValues
 import android.util.Log
-import com.example.cucisepatu.model.Jenis_Sepatu
 import com.example.cucisepatu.model.Sepatu
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -71,3 +70,5 @@ class CuciRepositoryImpl(private val firestore: FirebaseFirestore) : CuciReposit
         }.flowOn(Dispatchers.IO)
     }
 }
+
+

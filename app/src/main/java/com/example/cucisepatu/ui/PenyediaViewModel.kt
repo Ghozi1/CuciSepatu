@@ -22,6 +22,10 @@ object PenyediaViewModel {
         }
 
         initializer {
+            JenisViewModel(aplikasiSepatu().container.jenisSepatuRepository)
+        }
+
+        initializer {
             HomeViewModel(aplikasiSepatu().container.cuciRepository)
         }
 

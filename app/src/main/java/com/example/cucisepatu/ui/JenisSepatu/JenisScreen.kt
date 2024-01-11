@@ -1,156 +1,118 @@
 package com.example.cucisepatu.ui.JenisSepatu
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cucisepatu.model.Jenis_Sepatu
 import com.example.cucisepatu.navigation.DestinasiNavigasi
 import com.example.cucisepatu.ui.PenyediaViewModel
 import com.example.cucisepatu.ui.PesanTopAppBar
+import com.example.cucisepatu.ui.pemesanan.DestinasiEntry
+import kotlinx.coroutines.launch
 
 object DestinasiJenis : DestinasiNavigasi {
     override val route = "jenis"
     override val titleRes = "Jenis Sepatu"
 }
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun JenisScreen (
-    navigateToJenisItemEntry: () -> Unit,
+@Composable
+fun JenisScreen(
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onDetailClick: (Jenis_Sepatu) -> Unit = {},
-    viewModel: JenisViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+    jenisViewModel: JenisViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             PesanTopAppBar(
-                title = "Jenis Sepatu",
-                canNavigateBack = false,
-                scrollBehavior = scrollBehavior
+                title = DestinasiEntry.titleRes,
+                canNavigateBack = true,
+                scrollBehavior = scrollBehavior,
+                navigateUp = navigateBack
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = navigateToJenisItemEntry,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(18.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = ""
-                )
-            }
-        },
+        }
     ) { innerPadding ->
-        val uiJenisPesan by viewModel.jenisUIState.collectAsState()
-        BodyJenisHome(
-            itemJenis_Sepatu = uiJenisPesan.listJenis_Sepatu,
+
+        EntryBody(
+            jenisUIState = jenisViewModel.jenisUIState,
+            onJenisValueChange = jenisViewModel::updateJenisUIState,
+            onSaveClick = {
+                coroutineScope.launch {
+                    jenisViewModel.addJenis()
+                    navigateBack()
+                }
+            },
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
-            onPesanClick = onDetailClick
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun BodyJenisHome(
-    itemJenis_Sepatu: List<Jenis_Sepatu>,
-    modifier: Modifier = Modifier,
-    onPesanClick: (Jenis_Sepatu) -> Unit = {}
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        if (itemJenis_Sepatu.isEmpty()) {
-            Text(
-                text = "Tidak ada data pesanan...",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge
-            )
-        } else {
-            ListPesanan(
-                itemJenis_Sepatu = itemJenis_Sepatu,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp),
-                onItemClick = { onPesanClick(it) } // Correct the type of the parameter
-            )
-        }
-    }
-}
-
-@Composable
-fun ListPesanan(
-    itemJenis_Sepatu: List<Jenis_Sepatu>,
-    modifier: Modifier = Modifier,
-    onItemClick: (Jenis_Sepatu) -> Unit // Correct the type of the parameter
-) {
-    LazyColumn(
-        modifier = modifier
-    ) {
-        this.items(itemJenis_Sepatu, key = { it.id }) { jenisSepatu ->
-            DataJenisSepatu(
-                jenisSepatu = jenisSepatu,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onItemClick(jenisSepatu) }
-            )
-            Spacer(modifier = Modifier.padding(8.dp))
-        }
-    }
-}
-
-@Composable
-fun DataJenisSepatu(
-    jenisSepatu: Jenis_Sepatu,
+fun EntryBody(
+    jenisUIState: JenisUIState,
+    onJenisValueChange: (JenisEvent) -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.padding(12.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        JenisInput(
+            pemesananJenisEvent = jenisUIState.jenisEvent,
+            onValueChange = onJenisValueChange,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onSaveClick,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = jenisSepatu.nama,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-            }
+            Text("Submit")
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun JenisInput(
+    pemesananJenisEvent: JenisEvent,
+    modifier: Modifier = Modifier,
+    onValueChange: (JenisEvent) -> Unit = {},
+    enabled: Boolean = true
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        OutlinedTextField(
+            value = pemesananJenisEvent.nama,
+            onValueChange = { onValueChange(pemesananJenisEvent.copy(nama = it)) },
+            label = { Text("Nama") },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
+            singleLine = true
+        )
     }
 }

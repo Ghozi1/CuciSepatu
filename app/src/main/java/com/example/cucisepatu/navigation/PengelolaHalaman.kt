@@ -8,6 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.cucisepatu.ui.DestinasiLogin
+import com.example.cucisepatu.ui.JenisSepatu.DestinasiJenis
+import com.example.cucisepatu.ui.JenisSepatu.JenisScreen
+import com.example.cucisepatu.ui.LoginScreen
 import com.example.cucisepatu.ui.detail.DetailDestination
 import com.example.cucisepatu.ui.detail.DetailScreen
 import com.example.cucisepatu.ui.edit.EditDestination
@@ -22,15 +26,21 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
 
     NavHost(
         navController = navController,
-        startDestination = DestinasiHome.route,
+        startDestination = DestinasiLogin.route,
         modifier = Modifier
     ) {
+        composable(DestinasiLogin.route){
+            LoginScreen(navController)
+        }
         composable(
             DestinasiHome.route
         ) {
             HomeScreen(
                 navigateToItemEntry = {
                     navController.navigate(DestinasiEntry.route)
+                },
+                navigateToJenisEntry = {
+                    navController.navigate(DestinasiJenis.route)
                 },
                 onDetailClick = { itemId ->
                     navController.navigate("${DetailDestination.route}/$itemId")
@@ -39,6 +49,12 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         }
         composable(DestinasiEntry.route) {
             PemesananScreen(navigateBack = {
+                navController.popBackStack()
+            })
+
+        }
+        composable(DestinasiJenis.route){
+            JenisScreen(navigateBack = {
                 navController.popBackStack()
             })
 
