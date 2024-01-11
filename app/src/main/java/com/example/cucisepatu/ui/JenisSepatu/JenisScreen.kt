@@ -119,7 +119,7 @@ fun ListPesanan(
         modifier = modifier
     ) {
         this.items(itemJenis_Sepatu, key = { it.id }) { jenisSepatu ->
-            DataPesanan(
+            DataJenisSepatu(
                 jenisSepatu = jenisSepatu,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -131,7 +131,7 @@ fun ListPesanan(
 }
 
 @Composable
-fun DataPesanan(
+fun DataJenisSepatu(
     jenisSepatu: Jenis_Sepatu,
     modifier: Modifier = Modifier
 ) {
