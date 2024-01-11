@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-sealed class PesananUIState {
-    data class Success(val sepatu: Flow<List<Sepatu>>) : PesananUIState()
-    object Error : PesananUIState()
-    object Loading : PesananUIState()
+sealed class PemesananUIState {
+    data class Success(val kontak: Flow<List<Sepatu>>) : PemesananUIState()
+    object Error : PemesananUIState()
+    object Loading : PemesananUIState()
 }
 
 class HomeViewModel(private val cuciRepository: CuciRepository) : ViewModel() {
@@ -27,11 +27,12 @@ class HomeViewModel(private val cuciRepository: CuciRepository) : ViewModel() {
     val homeUIState: StateFlow<HomeUIState> = cuciRepository.getAll()
         .filterNotNull()
         .map {
-            HomeUIState (listSepatu = it.toList(), it.size ) }
+            HomeUIState (listPesan = it.toList(), it.size ) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
             initialValue = HomeUIState()
 
         )
+
 }

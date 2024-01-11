@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cucisepatu.navigation.DestinasiNavigasi
 import com.example.cucisepatu.ui.PemesananEvent
-import com.example.cucisepatu.ui.PemesananJenis
+import com.example.cucisepatu.ui.PemesananUIState
 import com.example.cucisepatu.ui.PenyediaViewModel
 import com.example.cucisepatu.ui.PesanTopAppBar
 import kotlinx.coroutines.launch
@@ -74,7 +74,7 @@ fun PemesananScreen(
 
 @Composable
 fun EntryBody(
-    pemesananUIState: PemesananJenis,
+    pemesananUIState: PemesananUIState,
     onPesanValueChange: (PemesananEvent) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier

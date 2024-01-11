@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cucisepatu.model.Jenis_Sepatu
+import com.example.cucisepatu.model.Sepatu
 import com.example.cucisepatu.navigation.DestinasiNavigasi
 import com.example.cucisepatu.ui.PenyediaViewModel
 import com.example.cucisepatu.ui.PesanTopAppBar
@@ -45,7 +48,6 @@ object DestinasiHome : DestinasiNavigasi {
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
-    navigateToJenisSepatu: () -> Unit,
     modifier: Modifier = Modifier,
     onDetailClick: (String) -> Unit = {},
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
@@ -62,29 +64,21 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            Column {
-                Button(
-                    onClick = navigateToItemEntry,
-                    modifier = Modifier
-                        .padding(end = 8.dp)
-                        .weight(1f)
-                ) {
-                    Text("Tambah Pesanan")
-                }
-                Button(
-                    onClick = navigateToJenisSepatu,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .weight(1f)
-                ) {
-                    Text("Jenis Sepatu")
-                }
+            FloatingActionButton(
+                onClick = navigateToItemEntry,
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(18.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = ""
+                )
             }
         },
     ) { innerPadding ->
-        val uiStateSiswa by viewModel.homeUIState.collectAsState()
+        val uiStatePesan by viewModel.homeUIState.collectAsState()
         BodyHome(
-            itemSepatu = uiStateSiswa.listSepatu,
+            itemSepatu = uiStatePesan.listPesan,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
@@ -95,7 +89,7 @@ fun HomeScreen(
 
 @Composable
 fun BodyHome(
-    itemSepatu: List<Jenis_Sepatu>,
+    itemSepatu: List<Sepatu>,
     modifier: Modifier = Modifier,
     onPesanClick: (String) -> Unit = {}
 ) {
@@ -122,9 +116,9 @@ fun BodyHome(
 
 @Composable
 fun ListPesanan(
-    itemSepatu: List<Jenis_Sepatu>,
+    itemSepatu: List<Sepatu>,
     modifier: Modifier = Modifier,
-    onItemClick: (Jenis_Sepatu) -> Unit
+    onItemClick: (Sepatu) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -143,7 +137,7 @@ fun ListPesanan(
 
 @Composable
 fun DataPesanan(
-    sepatu: Jenis_Sepatu,
+    sepatu: Sepatu,
     modifier: Modifier = Modifier
 ) {
     Card(
